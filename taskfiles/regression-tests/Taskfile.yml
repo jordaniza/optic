@@ -12,7 +12,10 @@ tasks:
       NUM_INTERACTIONS: '{{default 1 .NUM_INTERACTIONS}}'
       OUTPUT_DIR: '{{default "output" .OUTPUT_DIR}}'
       OPTIC_RUST_DIFF_ENGINE: '{{default "true" .OPTIC_RUST_DIFF_ENGINE}}'
+    env:
+      OPTIC_RUST_DIFF_ENGINE: '{{.OPTIC_RUST_DIFF_ENGINE}}'
     cmds:
+      - echo -e "DEBUG\n$(env)"
       - >
         mkdir -p
         {{.API_PROJECT_DIR}}

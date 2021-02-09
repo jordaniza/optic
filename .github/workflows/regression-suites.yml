@@ -13,10 +13,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        platform:
+          - os: windows-latest
+            de-task: diff-engine:build-windows
+          - os: macos-latest
+            de-task: diff-engine:build-macos
+          - os: ubuntu-latest
+            de-task: diff-engine:build-linux
         interaction-count: [10000]
         rust-diff-engine: [true]
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.platform.os }}
     steps:
       - name: Checkout source
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f # v2.3.4
@@ -40,7 +46,7 @@ jobs:
           key: workspace-node-modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}-v1
       - name: Install test dependencies
         shell: bash
-        run: task workspaces:setup workspaces:clean workspaces:build
+        run: task workspaces:build:ci
       - name: Display yarn error log
         shell: bash
         run: cat yarn-error.log
@@ -59,19 +65,10 @@ jobs:
           toolchain: stable
           profile: minimal
           override: true
-      # @TODO: build and use the release binary as opposed to the debug binary
-      - name: Build
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1.0.3
-        with:
-          command: build
-          args: --workspace --all-features
-      - name: Test
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1.0.3
-        with:
-          command: test
-      - name: Flush Cargo cache to disk
-        if: runner.os == 'macOS'
-        run: sudo /usr/sbin/purge
+      - name: Prepare diff-engine
+        env:
+          BUILD_ARGS: --all-features --workspace --release
+        run: task ${{ matrix.platform.de-task }} diff-engine:test
       - name: Run scenario
         shell: bash
         timeout-minutes: 2
@@ -85,11 +82,11 @@ jobs:
           optic_ci_standard_streams_regression__on_failure
         if: always()
       - run: |
-          echo "MESSAGE=${{ matrix.os }}: Regression suites passed." >> $GITHUB_ENV
+          echo "MESSAGE=${{ matrix.platform.os }}: Regression suites passed." >> $GITHUB_ENV
         shell: bash
         if: success()
       - run: |
-          echo "MESSAGE=${{ matrix.os }}: Regression suites failed. https://github.com/opticdev/optic/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
+          echo "MESSAGE=${{ matrix.plaftorm.os }}: Regression suites failed. https://github.com/opticdev/optic/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
         shell: bash
         if: failure()
       - name: Report status

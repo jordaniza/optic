@@ -34,6 +34,14 @@ tasks:
       # - workspace/diff-engine-wasm/engine/target/**/* # do we need this?
       - workspaces/*/build/**/*
 
+  workspaces:build:ci:
+    desc: CI workflow
+    cmds:
+      - task: workspaces:setup
+      - task: workspaces:clean
+      - task: workspaces:build
+      - task: flush-to-disk
+
   workspaces:clean:
     desc: Remove previous build artifacts
     cmds:

@@ -68,7 +68,7 @@ jobs:
       - name: Prepare diff-engine
         env:
           BUILD_ARGS: --all-features --workspace --release
-        run: task ${{ matrix.platform.de-task }} diff-engine:test
+        run: task ${{ matrix.platform.de-task }} diff-engine:add-targets diff-engine:test
       - name: Run scenario
         shell: bash
         timeout-minutes: 2

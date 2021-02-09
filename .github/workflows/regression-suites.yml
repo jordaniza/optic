@@ -72,7 +72,9 @@ jobs:
       - name: Run scenario
         shell: bash
         timeout-minutes: 2
-        run: task regression:test ${{ matrix.interaction-count }} ${{ matrix.rust-diff-engine }}
+        env:
+          NUM_INTERACTIONS: ${{ matrix.interaction-count }}
+        run: task regression:test
       - name: Display diff output
         shell: bash
         run: |

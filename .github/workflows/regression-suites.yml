@@ -40,11 +40,7 @@ jobs:
           key: workspace-node-modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}-v1
       - name: Install test dependencies
         shell: bash
-        run: |
-          set -x
-          set -v
-          source sourceme.sh
-          optic_build_for_release
+        run: task workspaces:clean workspaces:build
       - name: Display yarn error log
         shell: bash
         run: cat yarn-error.log

@@ -12,6 +12,8 @@ includes:
   ui:
     taskfile: workspaces/ui/Taskfile.yml
     dir: workspaces/ui
+  regression:
+    taskfile: taskfiles/regression-tests/Taskfile.yml
 
 tasks:
   workspaces:setup:

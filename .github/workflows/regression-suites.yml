@@ -15,11 +15,11 @@ jobs:
       matrix:
         platform:
           - os: windows-latest
-            de-task: diff-engine:build-windows
+            task: diff-engine:build-windows
           - os: macos-latest
-            de-task: diff-engine:build-macos
+            task: diff-engine:build-macos
           - os: ubuntu-latest
-            de-task: diff-engine:build-linux
+            task: diff-engine:build-linux
         interaction-count: [10000]
         rust-diff-engine: [true]
     runs-on: ${{ matrix.platform.os }}
@@ -68,7 +68,7 @@ jobs:
       - name: Prepare diff-engine
         env:
           BUILD_ARGS: --all-features --workspace --release
-        run: task diff-engine:add-targets ${{ matrix.platform.de-task }} diff-engine:test
+        run: task diff-engine:add-targets ${{ matrix.platform.task }} diff-engine:test
       - name: Run scenario
         shell: bash
         timeout-minutes: 2

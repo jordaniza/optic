@@ -15,7 +15,6 @@ tasks:
     env:
       OPTIC_RUST_DIFF_ENGINE: '{{.OPTIC_RUST_DIFF_ENGINE}}'
     cmds:
-      - echo -e "DEBUG\n$(env)"
       - >
         mkdir -p
         {{.API_PROJECT_DIR}}

@@ -1,8 +1,12 @@
 version: "3"
 
 tasks:
+  clean:
+    - rm -rf output optic-snapshots
+
   test:
     desc: Run standard streams regression tests
+    deps: [clean]
     vars:
       API_PROJECT_DIR: '{{default "optic-snapshots" .API_PROJECT_DIR}}'
       NUM_INTERACTIONS: '{{default 1 .NUM_INTERACTIONS}}'
@@ -20,9 +24,12 @@ tasks:
       - rm -rfv {{.API_PROJECT_DIR}}/.optic/captures/ccc/diffs/*
       - cd {{.API_PROJECT_DIR}} && DEBUG=optic* ../workspaces/local-cli/bin/run daemon:stop
       - cd {{.API_PROJECT_DIR}} && DEBUG=optic* ../workspaces/local-cli/bin/run spec
-      - |
-        set -o errexit;
-        workspaces/snapshot-tests/build/e2e/index.js {{.OUTPUT_DIR}}/{{.NUM_INTERACTIONS}} {{.API_PROJECT_DIR}} {{.NUM_INTERACTIONS}}
+      - >
+        node
+        workspaces/snapshot-tests/build/e2e/index.js
+        {{.OUTPUT_DIR}}/{{.NUM_INTERACTIONS}}
+        {{.API_PROJECT_DIR}}
+        {{.NUM_INTERACTIONS}}
       - cat {{.OUTPUT_DIR}}/{{.NUM_INTERACTIONS}}/*
       - ls -lah {{.API_PROJECT_DIR}}/.optic/captures/ccc/diffs/*
 

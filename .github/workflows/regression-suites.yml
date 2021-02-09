@@ -14,10 +14,10 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          # - os: windows-latest
-          #   task: diff-engine:build-windows
-          # - os: macos-latest
-          #   task: diff-engine:build-macos
+          - os: windows-latest
+            task: diff-engine:build-windows
+          - os: macos-latest
+            task: diff-engine:build-macos
           - os: ubuntu-latest
             task: diff-engine:build-linux
         interaction-count: [10000]

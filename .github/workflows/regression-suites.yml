@@ -18,6 +18,13 @@ jobs:
         rust-diff-engine: [true]
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Checkout source
+        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f # v2.3.4
+      - name: Install Task
+        uses: Arduino/actions/setup-taskfile@9d04a51fc17daddb0eb127933aaa950af1e3ff97 # they dont give us any tags :\
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@c46424eee26de4078d34105d3de3cc4992202b1e # v2.1.4
         with:
           node-version: 12
@@ -25,8 +32,6 @@ jobs:
         run: |
           echo "RUSTUP_HOME=$HOME/.rustup" >> $GITHUB_ENV
           echo "CARGO_HOME=$HOME/.cargo" >> $GITHUB_ENV
-      - name: Checkout source
-        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f # v2.3.4
       - name: Restore cached node_modules
         id: workspace-node-modules
         uses: actions/cache@26968a09c0ea4f3e233fdddbafd1166051a095f6 # v2.1.4

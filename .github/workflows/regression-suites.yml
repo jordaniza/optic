@@ -86,7 +86,7 @@ jobs:
         shell: bash
         if: success()
       - run: |
-          echo "MESSAGE=${{ matrix.plaftorm.os }}: Regression suites failed. https://github.com/opticdev/optic/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
+          echo "MESSAGE=${{ matrix.platform.os }}: Regression suites failed. https://github.com/opticdev/optic/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_ENV
         shell: bash
         if: failure()
       - name: Report status

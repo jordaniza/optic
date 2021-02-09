@@ -74,12 +74,7 @@ jobs:
         timeout-minutes: 2
         env:
           NUM_INTERACTIONS: ${{ matrix.interaction-count }}
-        run: task regression:test
-      - name: Display diff output
-        shell: bash
-        run: |
-          source sourceme.sh
-          optic_ci_standard_streams_regression__on_failure
+        run: task regression:test regression:on-failure
         if: always()
       - run: |
           echo "MESSAGE=${{ matrix.platform.os }}: Regression suites passed." >> $GITHUB_ENV

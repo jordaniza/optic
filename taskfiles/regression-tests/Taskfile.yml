@@ -52,3 +52,7 @@ tasks:
         {{.API_PROJECT_DIR}}
         {{.CAPTURE_ID}}
         {{.NUM_INTERACTIONS}}
+
+  on-failure:
+    - ls -lah optic-snasphots/.optic/captures/ccc/diffs/*
+    - cat optic-snapshots/.optic/captures/ccc/diffs/**/diff-engine-output.log
